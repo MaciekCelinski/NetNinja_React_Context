@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { v1 as uuidv1 } from "uuid";
+// components
 import NewSongForm from "./NewSongForm";
 
 const SongList = () => {
@@ -18,9 +19,26 @@ const SongList = () => {
 		},
 	]);
 
+	const [age, setAge] = useState(20);
+
+	const addOne = () => {
+		setAge(age + 1);
+	};
+
 	const addSong = (title) => {
 		setSongs([...songs, { title, id: uuidv1() }]);
 	};
+
+	useEffect(() => {
+		console.log("useEffect Hook run");
+	}, [songs]);
+
+	// we can use useEffect more than once in one component
+
+	useEffect(() => {
+		console.log("age was increased");
+	}, [age]);
+
 	return (
 		<div className="song-list">
 			<ul>
@@ -28,7 +46,9 @@ const SongList = () => {
 					<li key={song.id}>{song.title}</li>
 				))}
 			</ul>
-            <NewSongForm addSong={addSong} />            
+			<NewSongForm addSong={addSong} />
+			<p>Age: {age}</p>
+			<button onClick={addOne}>Add one to age</button>
 		</div>
 	);
 };
